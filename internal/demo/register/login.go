@@ -7,11 +7,12 @@ import (
 	"Open_IM/pkg/common/db/mysql_model/im_mysql_model"
 	http2 "Open_IM/pkg/common/http"
 	"Open_IM/pkg/common/log"
-	"Open_IM/pkg/utils"
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 type ParamsLogin struct {
@@ -46,7 +47,7 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"errCode": constant.PasswordErr, "errMsg": "password err"})
 		return
 	}
-	url := fmt.Sprintf("http://%s:10000/auth/user_token", utils.ServerIP)
+	url := fmt.Sprintf("http://%s:10000/auth/user_token", viper.GetString("endpoints.api"))
 	openIMGetUserToken := api.UserTokenReq{}
 	openIMGetUserToken.OperationID = params.OperationID
 	openIMGetUserToken.Platform = params.Platform

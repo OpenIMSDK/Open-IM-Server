@@ -7,10 +7,12 @@ import (
 	"Open_IM/pkg/grpc-etcdv3/getcdv3"
 	pbChat "Open_IM/pkg/proto/chat"
 	"Open_IM/pkg/utils"
-	"google.golang.org/grpc"
 	"net"
 	"strconv"
 	"strings"
+
+	"github.com/spf13/viper"
+	"google.golang.org/grpc"
 )
 
 type rpcChat struct {
@@ -19,6 +21,11 @@ type rpcChat struct {
 	etcdSchema      string
 	etcdAddr        []string
 	producer        *kafka.Producer
+	// beforeSenders are filters which will be triggered before send msg
+	beforeSenders []BeforeSendFilter
+
+	// afterSenders are filters which will be triggered after send msg
+	afterSenders []AfterSendFilter
 }
 
 func NewRpcChatServer(port int) *rpcChat {
@@ -31,6 +38,16 @@ func NewRpcChatServer(port int) *rpcChat {
 	}
 	rc.producer = kafka.NewKafkaProducer(config.Config.Kafka.Ws2mschat.Addr, config.Config.Kafka.Ws2mschat.Topic)
 	return &rc
+}
+
+// UseBeforSendFilters attaches a global filter to the BeforSendFilter logic
+func (rpc *rpcChat) UseBeforSendFilters(hs ...BeforeSendFilter) {
+	rpc.beforeSenders = append(rpc.beforeSenders, hs...)
+}
+
+// UseAfterSendFilters attaches a global filter to the AfterSendFilter logic
+func (rpc *rpcChat) UseAfterSendFilters(hs ...AfterSendFilter) {
+	rpc.afterSenders = append(rpc.afterSenders, hs...)
 }
 
 func (rpc *rpcChat) Run() {
@@ -51,7 +68,8 @@ func (rpc *rpcChat) Run() {
 	//service registers with etcd
 
 	pbChat.RegisterChatServer(srv, rpc)
-	err = getcdv3.RegisterEtcd(rpc.etcdSchema, strings.Join(rpc.etcdAddr, ","), utils.ServerIP, rpc.rpcPort, rpc.rpcRegisterName, 10)
+	host := viper.GetString("endpoints.rpc_msg")
+	err = getcdv3.RegisterEtcd(rpc.etcdSchema, strings.Join(rpc.etcdAddr, ","), host, rpc.rpcPort, rpc.rpcRegisterName, 10)
 	if err != nil {
 		log.Error("", "", "register rpc get_token to etcd failed, err = %s", err.Error())
 		return

@@ -59,6 +59,7 @@ kafka:
 serverip: 0.0.0.0
 
 # endpoints 内部组件间访问的端点host名称，访问时，可以内部直接访问 host:port 来访问
+# 如果需要使用ip访问（比如在单容器里面运行所有组件时），可以直接把下列名称直接改为ip地址（比如0.0.0.0）
 endpoints:
   api: openim_api
   cmsapi: openim_cms_api

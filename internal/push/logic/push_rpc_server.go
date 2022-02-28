@@ -4,12 +4,14 @@ import (
 	"Open_IM/pkg/common/config"
 	"Open_IM/pkg/common/log"
 	"Open_IM/pkg/grpc-etcdv3/getcdv3"
-	"Open_IM/pkg/proto/push"
+	pbPush "Open_IM/pkg/proto/push"
 	"Open_IM/pkg/utils"
 	"context"
-	"google.golang.org/grpc"
 	"net"
 	"strings"
+
+	"github.com/spf13/viper"
+	"google.golang.org/grpc"
 )
 
 type RPCServer struct {
@@ -37,7 +39,8 @@ func (r *RPCServer) run() {
 	srv := grpc.NewServer()
 	defer srv.GracefulStop()
 	pbPush.RegisterPushMsgServiceServer(srv, r)
-	err = getcdv3.RegisterEtcd(r.etcdSchema, strings.Join(r.etcdAddr, ","), ip, r.rpcPort, r.rpcRegisterName, 10)
+	host := viper.GetString("endpoints.push")
+	err = getcdv3.RegisterEtcd(r.etcdSchema, strings.Join(r.etcdAddr, ","), host, r.rpcPort, r.rpcRegisterName, 10)
 	if err != nil {
 		log.ErrorByKv("register push module  rpc to etcd err", "", "err", err.Error())
 	}

@@ -21,6 +21,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 )
 
@@ -59,7 +60,8 @@ func (s *userServer) Run() {
 	defer srv.GracefulStop()
 	//Service registers with etcd
 	pbUser.RegisterUserServer(srv, s)
-	err = getcdv3.RegisterEtcd(s.etcdSchema, strings.Join(s.etcdAddr, ","), ip, s.rpcPort, s.rpcRegisterName, 10)
+	host := viper.GetString("endpoints.rpc_user")
+	err = getcdv3.RegisterEtcd(s.etcdSchema, strings.Join(s.etcdAddr, ","), host, s.rpcPort, s.rpcRegisterName, 10)
 	if err != nil {
 		log.NewError("0", "RegisterEtcd failed ", err.Error(), s.etcdSchema, strings.Join(s.etcdAddr, ","), ip, s.rpcPort, s.rpcRegisterName)
 		return

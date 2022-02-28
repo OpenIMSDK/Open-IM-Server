@@ -12,9 +12,11 @@ import (
 	"context"
 	"encoding/gob"
 	"fmt"
-	"github.com/golang/protobuf/proto"
 	"net"
 	"strings"
+
+	"github.com/golang/protobuf/proto"
+	"github.com/spf13/viper"
 
 	"github.com/gorilla/websocket"
 	"google.golang.org/grpc"
@@ -45,7 +47,8 @@ func (r *RPCServer) run() {
 	srv := grpc.NewServer()
 	defer srv.GracefulStop()
 	pbRelay.RegisterOnlineMessageRelayServiceServer(srv, r)
-	err = getcdv3.RegisterEtcd4Unique(r.etcdSchema, strings.Join(r.etcdAddr, ","), ip, r.rpcPort, r.rpcRegisterName, 10)
+	host := viper.GetString("endpoints.msg_gateway")
+	err = getcdv3.RegisterEtcd4Unique(r.etcdSchema, strings.Join(r.etcdAddr, ","), host, r.rpcPort, r.rpcRegisterName, 10)
 	if err != nil {
 		log.ErrorByKv("register push message rpc to etcd err", "", "err", err.Error())
 	}

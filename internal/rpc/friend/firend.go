@@ -14,11 +14,13 @@ import (
 	sdkws "Open_IM/pkg/proto/sdk_ws"
 	"Open_IM/pkg/utils"
 	"context"
-	"google.golang.org/grpc"
 	"net"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/spf13/viper"
+	"google.golang.org/grpc"
 )
 
 type friendServer struct {
@@ -56,7 +58,8 @@ func (s *friendServer) Run() {
 	defer srv.GracefulStop()
 	//User friend related services register to etcd
 	pbFriend.RegisterFriendServer(srv, s)
-	err = getcdv3.RegisterEtcd(s.etcdSchema, strings.Join(s.etcdAddr, ","), ip, s.rpcPort, s.rpcRegisterName, 10)
+	host := viper.GetString("endpoints.rpc_friend")
+	err = getcdv3.RegisterEtcd(s.etcdSchema, strings.Join(s.etcdAddr, ","), host, s.rpcPort, s.rpcRegisterName, 10)
 	if err != nil {
 		log.NewError("0", "RegisterEtcd failed ", err.Error(), s.etcdSchema, strings.Join(s.etcdAddr, ","), ip, s.rpcPort, s.rpcRegisterName)
 		return
