@@ -5,6 +5,12 @@ import (
 	"net"
 )
 
+// Deprecated: This value is no longer recommended.
+// 不在建议使用该值：主要因为该值在每个组件部署时无法表示各自的实际ip，建议使用viper读取目标配置
+//
+// 比如：
+//
+// 需要读取rpc_auth地址时：viper.GetString("endpoints.rpc_auth")
 var ServerIP = ""
 
 func init() {

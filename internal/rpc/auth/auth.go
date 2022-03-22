@@ -16,6 +16,7 @@ import (
 
 	"Open_IM/pkg/common/config"
 
+	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 )
 
@@ -88,10 +89,11 @@ func (rpc *rpcAuth) Run() {
 
 	//service registers with etcd
 	pbAuth.RegisterAuthServer(srv, rpc)
-	err = getcdv3.RegisterEtcd(rpc.etcdSchema, strings.Join(rpc.etcdAddr, ","), utils.ServerIP, rpc.rpcPort, rpc.rpcRegisterName, 10)
+	host := viper.GetString("endpoints.rpc_auth")
+	err = getcdv3.RegisterEtcd(rpc.etcdSchema, strings.Join(rpc.etcdAddr, ","), host, rpc.rpcPort, rpc.rpcRegisterName, 10)
 	if err != nil {
 		log.NewError("0", "RegisterEtcd failed ", err.Error(),
-			rpc.etcdSchema, strings.Join(rpc.etcdAddr, ","), utils.ServerIP, rpc.rpcPort, rpc.rpcRegisterName)
+			rpc.etcdSchema, strings.Join(rpc.etcdAddr, ","), host, rpc.rpcPort, rpc.rpcRegisterName)
 		return
 	}
 	log.NewInfo("0", "RegisterAuthServer ok ", rpc.etcdSchema, strings.Join(rpc.etcdAddr, ","), utils.ServerIP, rpc.rpcPort, rpc.rpcRegisterName)

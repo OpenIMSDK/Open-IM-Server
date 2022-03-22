@@ -8,10 +8,11 @@ import (
 	"Open_IM/pkg/common/token_verify"
 	_ "Open_IM/pkg/common/token_verify"
 	"Open_IM/pkg/utils"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/minio/minio-go/v7"
 	cr "github.com/minio/minio-go/v7/pkg/credentials"
-	"net/http"
 )
 
 func MinioStorageCredential(c *gin.Context) {

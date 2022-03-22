@@ -7,11 +7,9 @@ SKY_BLUE_PREFIX="\033[36m"
 # 编译所有需要的组件源码
 win-build-all:
 	go env -w GOOS=linux 
-
 	make build-api && make build-msg-gateway && make build-msg-transfer  && make build-push && make build-timer-task
 	make build-rpc-user && make build-rpc-friend && make build-rpc-group && make build-rpc-msg && make build-rpc-auth
 	make build-demo
-
 	go env -w GOOS=windows
 
 # 编译 open_im_api

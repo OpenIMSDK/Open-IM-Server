@@ -11,8 +11,10 @@ import (
 	"Open_IM/pkg/utils"
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 type ParamsSetPassword struct {
@@ -49,7 +51,7 @@ func SetPassword(c *gin.Context) {
 			return
 		}
 	}
-	url := fmt.Sprintf("http://%s:10000/auth/user_register", utils.ServerIP)
+	url := fmt.Sprintf("http://%s:10000/auth/user_register", viper.GetString("endpoints.api"))
 	openIMRegisterReq := api.UserRegisterReq{}
 	openIMRegisterReq.OperationID = params.OperationID
 	openIMRegisterReq.Platform = params.Platform
@@ -69,7 +71,7 @@ func SetPassword(c *gin.Context) {
 		if err != nil {
 			log.NewError(params.OperationID, utils.GetSelfFuncName(), err.Error())
 		}
-		c.JSON(http.StatusOK, gin.H{"errCode": constant.RegisterFailed, "errMsg": "register failed: "+openIMRegisterResp.ErrMsg})
+		c.JSON(http.StatusOK, gin.H{"errCode": constant.RegisterFailed, "errMsg": "register failed: " + openIMRegisterResp.ErrMsg})
 		return
 	}
 	log.Info(params.OperationID, "begin store mysql", account, params.Password)
