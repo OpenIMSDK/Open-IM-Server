@@ -13,13 +13,11 @@ import (
 	"Open_IM/pkg/common/config"
 	"Open_IM/pkg/common/constant"
 	"Open_IM/pkg/common/log"
-	"Open_IM/pkg/grpc-etcdv3/getcdv3"
 	pbPush "Open_IM/pkg/proto/push"
 	pbRelay "Open_IM/pkg/proto/relay"
 	"Open_IM/pkg/utils"
 	"context"
 	"encoding/json"
-	"strings"
 )
 
 type OpenIMContent struct {
@@ -38,7 +36,8 @@ func MsgToUser(pushMsg *pbPush.PushMsgReq) {
 	var wsResult []*pbRelay.SingleMsgToUser
 	isOfflinePush := utils.GetSwitchFromOptions(pushMsg.MsgData.Options, constant.IsOfflinePush)
 	log.Debug("Get msg from msg_transfer And push msg", pushMsg.OperationID, "PushData", pushMsg.String())
-	grpcCons := getcdv3.GetConn4Unique(config.Config.Etcd.EtcdSchema, strings.Join(config.Config.Etcd.EtcdAddr, ","), config.Config.RpcRegisterName.OpenImOnlineMessageRelayName)
+	//grpcCons := getcdv3.GetConn4Unique(config.Config.Etcd.EtcdSchema, strings.Join(config.Config.Etcd.EtcdAddr, ","), config.Config.RpcRegisterName.OpenImOnlineMessageRelayName)
+	grpcCons := watcher.GetAllConns()
 	//Online push message
 	log.Debug("test", pushMsg.OperationID, "len  grpc", len(grpcCons), "data", pushMsg.String())
 	for _, v := range grpcCons {

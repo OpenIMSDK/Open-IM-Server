@@ -10,11 +10,13 @@ import (
 	"Open_IM/pkg/common/config"
 	"Open_IM/pkg/common/constant"
 	"Open_IM/pkg/common/kafka"
+	"Open_IM/pkg/grpc-etcdv3/getcdv3"
 	"Open_IM/pkg/statistics"
 	"fmt"
 )
 
 var (
+	watcher      *getcdv3.Watcher
 	rpcServer    RPCServer
 	pushCh       PushConsumerHandler
 	pushTerminal []int32
@@ -23,7 +25,7 @@ var (
 )
 
 func Init(rpcPort int) {
-
+	watcher = getcdv3.NewWatcher()
 	rpcServer.Init(rpcPort)
 	pushCh.Init()
 	pushTerminal = []int32{constant.IOSPlatformID, constant.AndroidPlatformID}
