@@ -36,6 +36,7 @@ redis:
   dbMaxActive: 0
   dbIdleTimeout: 120
   dbPassWord: openIM #redis密码 建议修改
+  dbDatabase: 0
 
 kafka:
   ws2mschat:
