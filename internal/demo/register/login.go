@@ -7,11 +7,10 @@ import (
 	"Open_IM/pkg/common/db/mysql_model/im_mysql_model"
 	http2 "Open_IM/pkg/common/http"
 	"Open_IM/pkg/common/log"
-	"Open_IM/pkg/utils"
 	"encoding/json"
-	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type ParamsLogin struct {
@@ -56,7 +55,7 @@ func Login(c *gin.Context) {
 	} else {
 		userID = r.Account
 	}
-	url := fmt.Sprintf("http://%s:%d/auth/user_token", utils.ServerIP, config.Config.Api.GinPort[0])
+	url := config.Config.Demo.ImAPIURL + "/auth/user_token"
 	openIMGetUserToken := api.UserTokenReq{}
 	openIMGetUserToken.OperationID = params.OperationID
 	openIMGetUserToken.Platform = params.Platform
