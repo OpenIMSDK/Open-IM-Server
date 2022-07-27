@@ -45,16 +45,16 @@ redis:
 kafka:
   ws2mschat:
     addr: [ 127.0.0.1:9092 ] #kafka配置，默认即可
-    topic: "ws2ms_chat"
-  ws2mschatoffline:
-    addr: [ 127.0.0.1:9092 ] #kafka配置，默认即可
-    topic: "ws2ms_chat_offline"
+    topic: "ws2ms_chat" #用于mongo和mysql保存消息
+#  ws2mschatoffline:
+#    addr: [ 127.0.0.1:9092 ] #kafka配置，默认即可
+#    topic: "ws2ms_chat_offline" #原为离线用户消息处理，目前暂时弃用
   msgtomongo:
     addr: [ 127.0.0.1:9092 ] #kafka配置，默认即可
     topic: "msg_to_mongo"
   ms2pschat:
     addr: [ 127.0.0.1:9092 ] #kafka配置，默认即可
-    topic: "ms2ps_chat"
+    topic: "ms2ps_chat" #消息push
   consumergroupid:
     msgToTransfer: mongo
     msgToMongo: mongo_ex

@@ -21,8 +21,8 @@ type rpcChat struct {
 	etcdSchema      string
 	etcdAddr        []string
 	onlineProducer  *kafka.Producer
-	offlineProducer *kafka.Producer
-	delMsgCh        chan deleteMsg
+	//offlineProducer *kafka.Producer
+	delMsgCh chan deleteMsg
 }
 
 type deleteMsg struct {
@@ -41,7 +41,7 @@ func NewRpcChatServer(port int) *rpcChat {
 		etcdAddr:        config.Config.Etcd.EtcdAddr,
 	}
 	rc.onlineProducer = kafka.NewKafkaProducer(config.Config.Kafka.Ws2mschat.Addr, config.Config.Kafka.Ws2mschat.Topic)
-	rc.offlineProducer = kafka.NewKafkaProducer(config.Config.Kafka.Ws2mschatOffline.Addr, config.Config.Kafka.Ws2mschatOffline.Topic)
+	//rc.offlineProducer = kafka.NewKafkaProducer(config.Config.Kafka.Ws2mschatOffline.Addr, config.Config.Kafka.Ws2mschatOffline.Topic)
 	rc.delMsgCh = make(chan deleteMsg, 1000)
 	return &rc
 }

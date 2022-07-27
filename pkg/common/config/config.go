@@ -208,10 +208,10 @@ type config struct {
 			Addr  []string `yaml:"addr"`
 			Topic string   `yaml:"topic"`
 		}
-		Ws2mschatOffline struct {
-			Addr  []string `yaml:"addr"`
-			Topic string   `yaml:"topic"`
-		}
+		//Ws2mschatOffline struct {
+		//	Addr  []string `yaml:"addr"`
+		//	Topic string   `yaml:"topic"`
+		//}
 		MsgToMongo struct {
 			Addr  []string `yaml:"addr"`
 			Topic string   `yaml:"topic"`
