@@ -171,11 +171,7 @@ func (p *Pool) Get(ctx context.Context) (*ClientConn, error) {
 	if wrapper.ClientConn == nil {
 		wrapper.ClientConn, err = p.factory(ctx)
 		if err != nil {
-			// If there was an error, we want to put back a placeholder
-			// client in the channel
-			clients <- ClientConn{
-				pool: p,
-			}
+			return nil, err
 		}
 		// This is a new connection, reset its initiated time
 		wrapper.timeInitiated = time.Now()
