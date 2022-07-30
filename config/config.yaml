@@ -129,6 +129,15 @@ credential: #腾讯cos，发送图片、视频、文件时需要，请自行申�
     finalHost: "http://bucket1.oss-cn-beijing.aliyuncs.com"
     stsDurationSeconds: 3600
     OssRoleArn: "acs:ram::xxx:role/xxx"
+  aws:
+    accessKeyID: ********************                             #AssumeRole用户关联的accessKeyID
+    accessKeySecret: ****************************************     #AssumeRole用户关联的accessKeySecrect
+    region: ap-southeast-1                                        #分区
+    bucket: ouyang                                                #桶
+    finalHost:  ouyang.s3.ap-southeast-1.amazonaws.com            #对外Host
+    roleArn: arn:aws:iam::192209831083:role/AWS_S3_FOR_OUYANG     #RoleArn
+    externalId: AssumeRoleExtend                                  #角色扩展Id
+    roleSessionName: Required-AWS-ID-OPENIM                       #角色SESSION名称
 
 dtm:
   serverURL: 127.0.0.1:10007

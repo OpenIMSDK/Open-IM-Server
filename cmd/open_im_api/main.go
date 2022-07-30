@@ -17,12 +17,14 @@ import (
 	"Open_IM/pkg/utils"
 	"flag"
 	"fmt"
+
 	//_ "github.com/razeencheng/demo-go/swaggo-gin/docs"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	"io"
 	"os"
 	"strconv"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/gin-gonic/gin"
 	//"syscall"
@@ -132,6 +134,7 @@ func main() {
 		thirdGroup.POST("/get_rtc_invitation_info", apiThird.GetRTCInvitationInfo)
 		thirdGroup.POST("/get_rtc_invitation_start_app", apiThird.GetRTCInvitationInfoStartApp)
 		thirdGroup.POST("/fcm_update_token", apiThird.FcmUpdateToken)
+		thirdGroup.POST("/aws_storage_credential", apiThird.AwsStorageCredential)
 	}
 	//Message
 	chatGroup := r.Group("/msg")
